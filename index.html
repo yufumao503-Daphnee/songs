@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <title>歌單查詢</title>
+  <style>
+    body { font-family: system-ui, sans-serif; background: #0f172a; color: #f1f5f9; margin: 0; padding: 20px; }
+    h1 { font-size: 24px; }
+    input { padding: 8px; width: 100%; max-width: 400px; border-radius: 6px; border: none; }
+    .list { margin-top: 20px; display: grid; gap: 10px; }
+    .card { background: #1e293b; padding: 12px; border-radius: 8px; }
+    .title { font-weight: bold; }
+    .artist { color: #93c5fd; }
+  </style>
+</head>
+<body>
+  <h1>歌單查詢</h1>
+  <input id="q" type="text" placeholder="輸入關鍵字或用 artist:周 / title:七里 查詢">
+  <div id="list" class="list"></div>
+
+<script>
+  // === 在這裡編輯你的歌單 ===
+  const DATA = [
+    { title: '七里香', artist: '周杰倫' },
+    { title: '唯一', artist: '王力宏' },
+    { title: '突然好想你', artist: '五月天' },
+    { title: '紅豆', artist: '王菲' },
+    { title: '體面', artist: '于文文' }
+  ];
+  // ===========================
+
+  const $ = (sel) => document.querySelector(sel);
+  const norm = (s) => (s||'').toLowerCase();
+
+  function parseQuery(q){
+    const filters = { title:[], artist:[], any:[] };
+    q.split(/\s+/).forEach(t=>{
+      const m = t.match(/^(title|artist):(.+)$/i);
+      if(m) filters[m[1].toLowerCase()].push(m[2]);
+      else if(t) filters.any.push(t);
+    });
+    return filters;
+  }
+
+  function matches(song, f){
+    const hay = {title:norm(song.title), artist:norm(song.artist), any:norm(song.title+' '+song.artist)};
+    const ok=(arr,key)=> arr.length===0||arr.every(t=>hay[key].includes(norm(t)));
+    return ok(f.title,'title') && ok(f.artist,'artist') && ok(f.any,'any');
+  }
+
+  function render(){
+    const q = $('#q').value.trim();
+    const f = parseQuery(q);
+    const rows = DATA.filter(s=>matches(s,f));
+    $('#list').innerHTML = rows.map(s=>`
+      <div class="card">
+        <div class="title">${s.title}</div>
+        <div class="artist">${s.artist}</div>
+      </div>`).join('') || '<div>沒有符合的歌曲。</div>';
+  }
+
+  $('#q').addEventListener('input', render);
+  render();
+</script>
+</body>
+</html>
