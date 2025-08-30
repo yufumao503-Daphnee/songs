@@ -6,11 +6,11 @@
   <style>
     body { font-family: system-ui, sans-serif; background: #0f172a; color: #f1f5f9; margin: 0; padding: 20px; }
     h1 { font-size: 24px; }
-    input { padding: 12px; font-size: 16px; width: 100%; max-width: 400px; border-radius: 8px; border: none; background: #1e2b3b; color: #f1f5f9; }
+    input { padding: 12px; font-size: 16px; width: 100%; max-width: 400px; border-radius: 8px; border: none; background: #1e293b; color: #f1f5f9; }
     .list { margin-top: 20px; display: grid; gap: 10px; }
-    .card { background: #1e2b3b; padding: 12px; border-radius: 8px; }
+    .card { background: #1e293b; padding: 12px; border-radius: 8px; }
     .title { font-weight: bold; }
-    .artist { color: #93c5fd; }
+    .artist { color: #93c5fd; margin-left: 0.5em; }
     .lyric { font-style: italic; color: #94a3b8; font-size: 14px; margin-top: 6px; }
     .tags { margin-top: 8px; }
     .tag { display: inline-block; background: #334155; color: #cbd5e1; padding: 2px 8px; font-size: 12px; border-radius: 10px; margin-right: 5px; margin-bottom: 5px;}
@@ -93,8 +93,9 @@
     const rows = DATA.filter(s => matches(s, f));
     $('#list').innerHTML = rows.map(s => `
       <div class="card">
-        <div class="title">${s.title}</div>
-        <div class="artist">${s.artist}</div>
+        <div>
+          <span class="title">${s.title}</span><span class="artist">- ${s.artist}</span>
+        </div>
         <div class="lyric">“${s.lyric || ''}”</div>
         <div class="tags">${(s.tags || '').split(',').map(t => t.trim() ? `<span class="tag">${t.trim()}</span>` : '').join(' ')}</div>
       </div>`).join('') || '<div>沒有符合的歌曲。</div>';
