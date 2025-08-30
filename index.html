@@ -6,59 +6,59 @@
   <style>
     body { font-family: system-ui, sans-serif; background: #0f172a; color: #f1f5f9; margin: 0; padding: 20px; }
     h1 { font-size: 24px; }
-    input { padding: 8px; width: 100%; max-width: 400px; border-radius: 6px; border: none; }
+    input { padding: 12px; font-size: 16px; width: 100%; max-width: 400px; border-radius: 8px; border: none; background: #1e2b3b; color: #f1f5f9; }
     .list { margin-top: 20px; display: grid; gap: 10px; }
-    .card { background: #1e293b; padding: 12px; border-radius: 8px; }
+    .card { background: #1e2b3b; padding: 12px; border-radius: 8px; }
     .title { font-weight: bold; }
     .artist { color: #93c5fd; }
+    .lyric { font-style: italic; color: #94a3b8; font-size: 14px; margin-top: 6px; }
     .tags { margin-top: 8px; }
     .tag { display: inline-block; background: #334155; color: #cbd5e1; padding: 2px 8px; font-size: 12px; border-radius: 10px; margin-right: 5px; margin-bottom: 5px;}
   </style>
 </head>
 <body>
   <h1>帽霓私房伴奏查詢👒✨🐤</h1>
-  <input id="q" type="text" placeholder="輸入關鍵字或用 artist:王菲 / title:人間 / tag:嗨歌 查詢">
+  <input id="q" type="text" placeholder="輸入歌名、歌手、歌詞或 tag:嗨歌 查詢">
   <div id="list" class="list"></div>
 
 <script>
   // === 在這裡編輯你的歌單 ===
   const DATA = [
-    { title: '人間', artist: '王菲', tags: '經典, 抒情' },
-    { title: '特務J', artist: '蔡依林', tags: '嗨歌, 舞曲, 經典' },
-    { title: '別嘆', artist: '黃霄雲', tags: '抒情, 傷感' },
-    { title: '刻心痕', artist: '謝宜君', tags: '抒情, 台語' },
-    { title: '給我一個理由忘記', artist: 'A-Lin 黃麗玲', tags: 'KTV, 經典, 抒情, 傷感' },
-    { title: '多想留在你身邊', artist: '劉增瞳', tags: '網路歌曲, 抒情' },
-    { title: '接受', artist: '梁靜茹', tags: '經典, 抒情, 傷感' },
-    { title: '求佛', artist: '吳曉娜', tags: '網路歌曲, 經典, 傷感' },
-    { title: '不敢聽的歌', artist: '李千娜', tags: '抒情, 傷感' },
-    { title: '大眠', artist: '王心凌', tags: '抒情, 傷感' },
-    { title: '別再撐了', artist: '安心亞', tags: '抒情, 傷感' },
-    { title: '忽遠忽近', artist: '九姨太', tags: '網路歌曲, 抒情' },
-    { title: '左邊', artist: '楊丞琳', tags: '經典, 抒情' },
-    { title: '第一次和聲版 (天籟的聲音)', artist: '房東的貓', tags: '民謠, 清新' },
-    { title: '我認', artist: '戴羽彤', tags: '網路歌曲, 傷感' },
-    { title: '可以不是你', artist: '戴羽彤', tags: '網路歌曲, 傷感' },
-    { title: '簡單愛', artist: '周杰倫', tags: '經典, R&B, 甜歌' },
-    { title: '頭號甜心', artist: '張韶涵', tags: '甜歌, 流行' },
-    { title: '(Daphne漁夫帽改) 分分鐘需要你', artist: '林一', tags: '粵語, 經典, 翻唱, 甜歌' },
-    { title: '愛你', artist: '王心凌', tags: '經典, 甜歌, 舞曲' },
-    { title: 'Honey', artist: '王心凌', tags: '經典, 甜歌, 舞曲' },
-    { title: '慢冷', artist: '梁靜茹', tags: '抒情, 傷感' },
-    { title: '寵愛', artist: 'TFBOYS', tags: '甜歌, 流行' },
-    { title: '分分鐘需要你', artist: '林一', tags: '粵語, 經典, 甜歌' },
-    { title: '(漁夫帽Daphne改) 分分鐘需要你', artist: '林一', tags: '粵語, 經典, 翻唱, 甜歌' },
-    { title: '塵埃', artist: '容祖兒', tags: '粵語, 抒情' },
-    { title: '佐手回憶佑手你', artist: '沈末', tags: '網路歌曲, 傷感' },
-    { title: '瀟灑小姐 (short)', artist: '蕭亞軒', tags: '經典, 舞曲, 嗨歌' },
-    { title: 'So Crazy', artist: '李玟', tags: '經典, R&B, 嗨歌' },
-    { title: 'Da Da Da', artist: '王心凌', tags: '舞曲, 嗨歌' },
-    { title: '如願', artist: '王菲', tags: '經典, 抒情' },
-    { title: '代言人', artist: '蕭亞軒', tags: '經典, 舞曲, 嗨歌' },
-    { title: '刀馬旦（live）', artist: '李玟', tags: '經典, 中國風, R&B, 嗨歌' },
-    { title: '勇敢', artist: '張惠妹', tags: '經典, 抒情, 勵志' },
-    { title: '善變', artist: '王靖雯不胖', tags: '抖音熱歌, 抒情, 傷感' },
-    { title: '目及皆是你', artist: '小藍背心', tags: '抖音熱歌, 甜歌' }
+    { title: '人間', artist: '王菲', tags: '經典, 抒情', lyric: '風雨過後不一定有美好的天空' },
+    { title: '特務J', artist: '蔡依林', tags: '嗨歌, 舞曲, 經典', lyric: '尖叫劃破漫長黑夜' },
+    { title: '別嘆', artist: '黃霄雲', tags: '抒情, 傷感', lyric: '如果我的眼淚會說話' },
+    { title: '刻心痕', artist: '謝宜君', tags: '抒情, 台語', lyric: '你陪我風花雪月 路一程' },
+    { title: '給我一個理由忘記', artist: 'A-Lin 黃麗玲', tags: 'KTV, 經典, 抒情, 傷感', lyric: '雨都停了 這片天灰什麼呢' },
+    { title: '多想留在你身邊', artist: '劉增瞳', tags: '網路歌曲, 抒情', lyric: '沒有花瓣的季節剩下落葉的秋天' },
+    { title: '接受', artist: '梁靜茹', tags: '經典, 抒情, 傷感', lyric: '彷彿上一分鐘 你還陪在我左右' },
+    { title: '求佛', artist: '誓言', tags: '網路歌曲, 經典, 傷感', lyric: '當月光灑在我的臉上' },
+    { title: '不敢聽的歌', artist: '李千娜', tags: '抒情, 傷感', lyric: '一個人不敢聽的歌 包廂裡總有人唱著' },
+    { title: '大眠', artist: '王心凌', tags: '抒情, 傷感', lyric: '感謝他把我 當成傻子' },
+    { title: '別再撐了', artist: '安心亞', tags: '抒情, 傷感', lyric: '你我站在回憶兩端上互對望' },
+    { title: '忽遠忽近', artist: '九姨太', tags: '網路歌曲, 抒情', lyric: '眼前的是陷阱還是一片光明' },
+    { title: '左邊', artist: '楊丞琳', tags: '經典, 抒情', lyric: '總是忍不住寂寞掉下眼淚' },
+    { title: '第一次', artist: '房東的貓', tags: '民謠, 清新', lyric: '當你走在熟悉的路上' },
+    { title: '我認', artist: '戴羽彤', tags: '網路歌曲, 傷感', lyric: '要不是你當初的狠心' },
+    { title: '可以不是你', artist: '戴羽彤', tags: '網路歌曲, 傷感', lyric: '我承認現在的我' },
+    { title: '頭號甜心', artist: '張韶涵', tags: '甜歌, 流行', lyric: '你說你最喜歡牽我的手' },
+    { title: '(Daphne漁夫帽改) 分分鐘需要你', artist: '林一', tags: '粵語, 經典, 翻唱, 甜歌', lyric: '願我會揸火箭 帶你到天空去' },
+    { title: '愛你', artist: '王心凌', tags: '經典, 甜歌, 舞曲', lyric: '如果你突然打了個噴嚏' },
+    { title: 'Honey', artist: '王心凌', tags: '經典, 甜歌, 舞曲', lyric: 'Honey Honey Honey Honey' },
+    { title: '慢冷', artist: '梁靜茹', tags: '抒情, 傷感', lyric: '說完了好像話都說完了' },
+    { title: '寵愛', artist: 'TFBOYS', tags: '甜歌, 流行', lyric: '小小的年紀還不懂什麼是愛' },
+    { title: '分分鐘需要你', artist: '林一', tags: '粵語, 經典, 甜歌', lyric: '願我會揸火箭 帶你到天空去' },
+    { title: '(漁夫帽Daphne改) 分分鐘需要你', artist: '林一', tags: '粵語, 經典, 翻唱, 甜歌', lyric: '願我會揸火箭 帶你到天空去' },
+    { title: '塵埃', artist: '家家', tags: '抒情, 傷感', lyric: '星星一直都在 這一片雲海' },
+    { title: '佐手回憶佑手你', artist: '沈末', tags: '網路歌曲, 傷感', lyric: '開燈關燈遙望無邊的星系' },
+    { title: '瀟灑小姐', artist: '蕭亞軒', tags: '經典, 舞曲, 嗨歌', lyric: '昨晚睡得太少 黑眼圈遮不掉' },
+    { title: 'So Crazy', artist: '李玟', tags: '經典, R&B, 嗨歌', lyric: '看見你站在門外' },
+    { title: 'Da Da Da', artist: '王心凌', tags: '舞曲, 嗨歌', lyric: 'Yo Yo Yo Yo 讓開心先過' },
+    { title: '如願', artist: '王菲', tags: '經典, 抒情', lyric: '你是 遙遙的路' },
+    { title: '代言人', artist: '蕭亞軒', tags: '經典, 舞曲, 嗨歌', lyric: '綠茶找誰證明好味道' },
+    { title: '刀馬旦（live）', artist: '李玟', tags: '經典, 中國風, R&B, 嗨歌', lyric: '明明早上人還在香港' },
+    { title: '勇敢', artist: '張惠妹', tags: '經典, 抒情, 勵志', lyric: '黑暗中寂靜伸出的雙手' },
+    { title: '善變', artist: '王靖雯不胖', tags: '抖音熱歌, 抒情, 傷感', lyric: '身後公園是第一次遇見' },
+    { title: '目及皆是你', artist: '小藍背心', tags: '抖音熱歌, 甜歌', lyric: '玻璃上的霧氣 我臨摹一個你' }
   ];
   // ===========================
 
@@ -80,7 +80,8 @@
       title: norm(song.title), 
       artist: norm(song.artist),
       tag: norm(song.tags),
-      any: norm(song.title + ' ' + song.artist + ' ' + song.tags)
+      lyric: norm(song.lyric),
+      any: norm(song.title + ' ' + song.artist + ' ' + song.tags + ' ' + song.lyric)
     };
     const ok = (arr, key) => arr.length === 0 || arr.every(t => hay[key].includes(norm(t)));
     return ok(f.title, 'title') && ok(f.artist, 'artist') && ok(f.tag, 'tag') && ok(f.any, 'any');
@@ -94,6 +95,7 @@
       <div class="card">
         <div class="title">${s.title}</div>
         <div class="artist">${s.artist}</div>
+        <div class="lyric">“${s.lyric || ''}”</div>
         <div class="tags">${(s.tags || '').split(',').map(t => t.trim() ? `<span class="tag">${t.trim()}</span>` : '').join(' ')}</div>
       </div>`).join('') || '<div>沒有符合的歌曲。</div>';
   }
