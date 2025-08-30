@@ -2,10 +2,17 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="utf-8">
-  <title>帽霓私房伴奏查詢👒✨🐤</title>
+  <title>帽霓私房歌單👒✨🐤</title>
   <style>
     body { font-family: system-ui, sans-serif; background: #0f172a; color: #f1f5f9; margin: 0; padding: 20px; }
     h1 { font-size: 24px; }
+    
+    /* --- 頁籤樣式 --- */
+    .tabs { display: flex; gap: 10px; margin-bottom: 15px; border-bottom: 1px solid #334155; }
+    .tab { padding: 10px 15px; border: none; background: none; color: #94a3b8; font-size: 16px; cursor: pointer; border-radius: 6px 6px 0 0; }
+    .tab.active { background: #1e293b; color: white; font-weight: bold; }
+    /* ---------------- */
+
     input { padding: 12px; font-size: 16px; width: 100%; max-width: 400px; border-radius: 8px; border: none; background: #1e293b; color: #f1f5f9; }
     .list { margin-top: 20px; display: grid; gap: 10px; }
     .card { background: #1e293b; padding: 12px; border-radius: 8px; }
@@ -17,12 +24,28 @@
   </style>
 </head>
 <body>
-  <h1>帽霓私房伴奏查詢👒✨🐤</h1>
-  <input id="q" type="text" placeholder="輸入歌名、歌手、歌詞或 tag:嗨歌 查詢">
-  <div id="list" class="list"></div>
+  <h1>帽霓私房歌單👒✨🐤</h1>
+
+  <!-- 新增的頁籤按鈕 -->
+  <div class="tabs">
+    <button class="tab active" data-tab="search">伴奏查詢</button>
+    <button class="tab" data-tab="new">新歌推薦</button>
+  </div>
+
+  <!-- 查詢相關的區塊 -->
+  <div id="search-section">
+    <input id="q" type="text" placeholder="輸入歌名、歌手、歌詞或 tag:嗨歌 查詢">
+    <div id="list" class="list"></div>
+  </div>
+
+  <!-- 新歌推薦的區塊 (預設隱藏) -->
+  <div id="new-songs-section" style="display: none;">
+    <div id="new-songs-list" class="list"></div>
+  </div>
+
 
 <script>
-  // === 在這裡編輯你的歌單 ===
+  // === 伴奏資料庫 ===
   const DATA = [
     { title: '人間', artist: '王菲', tags: '經典, 抒情', lyric: '風雨過後不一定有美好的天空' },
     { title: '特務J', artist: '蔡依林', tags: '嗨歌, 舞曲, 經典', lyric: '尖叫劃破漫長黑夜' },
@@ -61,10 +84,20 @@
     { title: '目及皆是你', artist: '小藍背心', tags: '抖音熱歌, 甜歌', lyric: '玻璃上的霧氣 我臨摹一個你' }
   ];
   // ===========================
+  
+  // === 新增：新歌推薦資料庫 ===
+  const NEW_SONGS_TO_LEARN = [
+    { title: '訣愛', artist: '詹雯婷', tags: '古風, 抖音熱歌', lyric: '忘記你該用什麼方法' },
+    { title: '我記得', artist: '趙雷', tags: '民謠, 感動', lyric: '我記得有一些聲響' },
+    { title: '帶我去找夜生活', artist: '告五人', tags: '獨立樂團, 迷幻', lyric: '我帶你去找夜生活' },
+    { title: '烏梅子醬', artist: '李榮浩', tags: '流行, 甜歌', lyric: '你淺淺的微笑就像 烏梅子醬' },
+  ];
+  // ===========================
 
   const $ = (sel) => document.querySelector(sel);
   const norm = (s) => (s||'').toLowerCase();
 
+  // --- 伴奏查詢相關的函式 ---
   function parseQuery(q){
     const filters = { title:[], artist:[], tag:[], any:[] };
     q.split(/\s+/).forEach(t=>{
@@ -87,7 +120,7 @@
     return ok(f.title, 'title') && ok(f.artist, 'artist') && ok(f.tag, 'tag') && ok(f.any, 'any');
   }
 
-  function render(){
+  function renderSearchList(){
     const q = $('#q').value.trim();
     const f = parseQuery(q);
     const rows = DATA.filter(s => matches(s, f));
@@ -100,9 +133,47 @@
         <div class="tags">${(s.tags || '').split(',').map(t => t.trim() ? `<span class="tag">${t.trim()}</span>` : '').join(' ')}</div>
       </div>`).join('') || '<div>沒有符合的歌曲。</div>';
   }
+  
+  // --- 新增：渲染新歌推薦列表的函式 ---
+  function renderNewSongsList() {
+    $('#new-songs-list').innerHTML = NEW_SONGS_TO_LEARN.map(s => `
+      <div class="card">
+        <div>
+          <span class="title">${s.title}</span><span class="artist">- ${s.artist}</span>
+        </div>
+        <div class="lyric">“${s.lyric || ''}”</div>
+        <div class="tags">${(s.tags || '').split(',').map(t => t.trim() ? `<span class="tag">${t.trim()}</span>` : '').join(' ')}</div>
+      </div>`).join('') || '<div>目前沒有新歌推薦。</div>';
+  }
 
-  $('#q').addEventListener('input', render);
-  render();
+  // --- 新增：頁籤切換邏輯 ---
+  const tabs = document.querySelectorAll('.tab');
+  const searchSection = $('#search-section');
+  const newSongsSection = $('#new-songs-section');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      // 移除所有頁籤的 active 狀態
+      tabs.forEach(t => t.classList.remove('active'));
+      // 為當前點擊的頁籤加上 active 狀態
+      tab.classList.add('active');
+
+      const tabName = tab.getAttribute('data-tab');
+      if (tabName === 'search') {
+        searchSection.style.display = 'block';
+        newSongsSection.style.display = 'none';
+      } else {
+        searchSection.style.display = 'none';
+        newSongsSection.style.display = 'block';
+      }
+    });
+  });
+
+  // --- 初始化 ---
+  $('#q').addEventListener('input', renderSearchList);
+  renderSearchList(); // 預設渲染伴奏查詢列表
+  renderNewSongsList(); // 同時也先渲染好新歌列表的內容
+
 </script>
 </body>
 </html>
