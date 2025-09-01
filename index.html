@@ -15,16 +15,14 @@
     .list { margin-top: 20px; display: grid; gap: 10px; }
     .card { background: #1e293b; padding: 12px; border-radius: 8px; transition: background 0.2s; }
     
-    #new-songs-list .card-link:hover .card {
-        background: #334155;
-    }
+    #new-songs-list .card-link:hover .card { background: #334155; }
     .card-link { color: inherit; text-decoration: none; }
     
     .title { font-weight: bold; }
     .artist { color: #93c5fd; margin-left: 0.5em; }
     .lyric { font-style: italic; color: #94a3b8; font-size: 14px; margin-top: 6px; }
     .tags { margin-top: 8px; }
-    .tag { display: inline-block; background: #334155; color: #cbd5e1; padding: 2px 8px; font-size: 12px; border-radius: 10px; margin-right: 5px; margin-bottom: 5px;}
+    .tag { display: inline-block; background: #334155; color: #cbd5e1; padding: 2px 8px; font-size: 12px; border-radius: 10px; margin-right: 5px; margin-bottom: 5px; }
   </style>
 </head>
 <body>
@@ -44,7 +42,6 @@
     <div id="new-songs-list" class="list"></div>
   </div>
 
-
 <script>
   // === 伴奏資料庫 ===
   const DATA = [
@@ -58,146 +55,4 @@
     { title: '求佛', artist: '誓言', tags: '網路歌曲, 經典, 傷感', lyric: '當月光灑在我的臉上' },
     { title: '不敢聽的歌', artist: '李千娜', tags: '抒情, 傷感', lyric: '一個人不敢聽的歌 包廂裡總有人唱著' },
     { title: '大眠', artist: '王心凌', tags: '抒情, 傷感', lyric: '感謝他把我 當成傻子' },
-    { title: '別再撐了', artist: '安心亞', tags: '抒情, 傷感', lyric: '你我站在回憶兩端上互對望' },
-    { title: '忽遠忽近', artist: '九姨太', tags: '網路歌曲, 抒情', lyric: '眼前的是陷阱還是一片光明' },
-    { title: '左邊', artist: '楊丞琳', tags: '經典, 抒情', lyric: '總是忍不住寂寞掉下眼淚' },
-    { title: '第一次', artist: '房東的貓', tags: '民謠, 清新', lyric: '當你走在熟悉的路上' },
-    { title: '我認', artist: '戴羽彤', tags: '網路歌曲, 傷感', lyric: '要不是你當初的狠心' },
-    { title: '可以不是你', artist: '戴羽彤', tags: '網路歌曲, 傷感', lyric: '我承認現在的我' },
-    { title: '頭號甜心', artist: '張韶涵', tags: '甜歌, 流行', lyric: '你說你最喜歡牽我的手' },
-    { title: '(Daphne漁夫帽改) 分分鐘需要你', artist: '林一', tags: '粵語, 經典, 翻唱, 甜歌', lyric: '願我會揸火箭 帶你到天空去' },
-    { title: '愛你', artist: '王心凌', tags: '經典, 甜歌, 舞曲', lyric: '如果你突然打了個噴嚏' },
-    { title: 'Honey', artist: '王心凌', tags: '經典, 甜歌, 舞曲', lyric: 'Honey Honey Honey Honey' },
-    { title: '慢冷', artist: '梁靜茹', tags: '抒情, 傷感', lyric: '說完了好像話都說完了' },
-    { title: '寵愛', artist: 'TFBOYS', tags: '甜歌, 流行', lyric: '小小的年紀還不懂什麼是愛' },
-    { title: '分分鐘需要你', artist: '林一', tags: '粵語, 經典, 甜歌', lyric: '願我會揸火箭 帶你到天空去' },
-    { title: '(漁夫帽Daphne改) 分分鐘需要你', artist: '林一', tags: '粵語, 經典, 翻唱, 甜歌', lyric: '願我會揸火箭 帶你到天空去' },
-    { title: '塵埃', artist: '家家', tags: '抒情, 傷感', lyric: '星星一直都在 這一片雲海' },
-    { title: '佐手回憶佑手你', artist: '沈末', tags: '網路歌曲, 傷感', lyric: '開燈關燈遙望無邊的星系' },
-    { title: '瀟灑小姐', artist: '蕭亞軒', tags: '經典, 舞曲, 嗨歌', lyric: '昨晚睡得太少 黑眼圈遮不掉' },
-    { title: 'So Crazy', artist: '李玟', tags: '經典, R&B, 嗨歌', lyric: '看見你站在門外' },
-    { title: 'Da Da Da', artist: '王心凌', tags: '舞曲, 嗨歌', lyric: 'Yo Yo Yo Yo 讓開心先過' },
-    { title: '如願', artist: '王菲', tags: '經典, 抒情', lyric: '你是 遙遙的路' },
-    { title: '代言人', artist: '蕭亞軒', tags: '經典, 舞曲, 嗨歌', lyric: '綠茶找誰證明好味道' },
-    { title: '刀馬旦（live）', artist: '李玟', tags: '經典, 中國風, R&B, 嗨歌', lyric: '明明早上人還在香港' },
-    { title: '勇敢', artist: '張惠妹', tags: '經典, 抒情, 勵志', lyric: '黑暗中寂寞伸出的雙手' },
-    { title: '善變', artist: '王靖雯不胖', tags: '抖音熱歌, 抒情, 傷感', lyric: '身後公園是第一次遇見' },
-    { title: '目及皆是你', artist: '小藍背心', tags: '抖音熱歌, 甜歌', lyric: '玻璃上的霧氣 我臨摹一個你' },
-    // === 新增三首 ===
-    { 
-      title: '門沒鎖', 
-      artist: '呂薔', 
-      tags: '抒情, 流行', 
-      lyric: '門沒鎖 門沒鎖 門沒鎖 oh baby',
-      youtubeUrl: 'https://www.youtube.com/watch?v=izHNo0F6t1w' 
-    },
-    { 
-      title: '淪陷', 
-      artist: '王靖雯不胖', 
-      tags: '抖音熱歌, 抒情', 
-      lyric: '你走之後 整個世界 像是期待黎明的黑夜',
-      youtubeUrl: 'https://www.youtube.com/watch?v=WR07zN_t3tY' 
-    },
-    { 
-      title: '話題', 
-      artist: '周蕙', 
-      tags: '經典, 抒情', 
-      lyric: '面對面坐著的是不是你',
-      youtubeUrl: 'https://www.youtube.com/watch?v=vdKykoNHLHw' 
-    }
-  ];
-  // ===========================
-  
-  // === 新歌推薦資料庫 ===
-  const NEW_SONGS_TO_LEARN = [
-    { title: '尋一個你', artist: '化十', tags: '抒情, 抖音熱歌, 古風', lyric: '沉迷在 你清澈的眼睛', youtubeUrl: 'https://www.youtube.com/watch?v=psu5RBYH0iA' },
-    { title: '訣愛', artist: '詹雯婷', tags: '古風, 抖音熱歌', lyric: '等天崩地裂的那一瞬間', youtubeUrl: 'https://www.youtube.com/watch?v=I4lonGT1PYM' }
-  ];
-  // ===========================
-
-  const $ = (sel) => document.querySelector(sel);
-  const norm = (s) => (s||'').toLowerCase();
-
-  // --- 伴奏查詢相關的函式 ---
-  function parseQuery(q){
-    const filters = { title:[], artist:[], tag:[], any:[] };
-    q.split(/\s+/).forEach(t=>{
-      const m = t.match(/^(title|artist|tag):(.+)$/i);
-      if(m) filters[m[1].toLowerCase()].push(m[2]);
-      else if(t) filters.any.push(t);
-    });
-    return filters;
-  }
-
-  function matches(song, f){
-    const hay = {
-      title: norm(song.title), 
-      artist: norm(song.artist),
-      tag: norm(song.tags),
-      lyric: norm(song.lyric),
-      any: norm(song.title + ' ' + song.artist + ' ' + song.tags + ' ' + song.lyric)
-    };
-    const ok = (arr, key) => arr.length === 0 || arr.every(t => hay[key].includes(norm(t)));
-    return ok(f.title, 'title') && ok(f.artist, 'artist') && ok(f.tag, 'tag') && ok(f.any, 'any');
-  }
-
-  function renderSearchList(){
-    const q = $('#q').value.trim();
-    const f = parseQuery(q);
-    const rows = DATA.filter(s => matches(s, f));
-    $('#list').innerHTML = rows.map(s => `
-      <a href="${s.youtubeUrl || '#'}" target="_blank" class="card-link">
-        <div class="card">
-          <div>
-            <span class="title">${s.title}</span><span class="artist">- ${s.artist}</span>
-          </div>
-          <div class="lyric">“${s.lyric || ''}”</div>
-          <div class="tags">${(s.tags || '').split(',').map(t => t.trim() ? `<span class="tag">${t.trim()}</span>` : '').join(' ')}</div>
-        </div>
-      </a>`).join('') || '<div>沒有符合的歌曲。</div>';
-  }
-  
-  // --- 渲染新歌推薦列表 (加上連結) ---
-  function renderNewSongsList() {
-    $('#new-songs-list').innerHTML = NEW_SONGS_TO_LEARN.map(s => `
-      <a href="${s.youtubeUrl}" target="_blank" class="card-link">
-        <div class="card">
-          <div>
-            <span class="title">${s.title}</span><span class="artist">- ${s.artist}</span>
-          </div>
-          <div class="lyric">“${s.lyric || ''}”</div>
-          <div class="tags">${(s.tags || '').split(',').map(t => t.trim() ? `<span class="tag">${t.trim()}</span>` : '').join(' ')}</div>
-        </div>
-      </a>
-    `).join('') || '<div>目前沒有新歌推薦。</div>';
-  }
-
-  // --- 頁籤切換邏輯 ---
-  const tabs = document.querySelectorAll('.tab');
-  const searchSection = $('#search-section');
-  const newSongsSection = $('#new-songs-section');
-
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-
-      const tabName = tab.getAttribute('data-tab');
-      if (tabName === 'search') {
-        searchSection.style.display = 'block';
-        newSongsSection.style.display = 'none';
-      } else {
-        searchSection.style.display = 'none';
-        newSongsSection.style.display = 'block';
-      }
-    });
-  });
-
-  // --- 初始化 ---
-  $('#q').addEventListener('input', renderSearchList);
-  renderSearchList();
-  renderNewSongsList();
-
-</script>
-</body>
-</html>
+    { title: '別再撐了', artist: '安心亞', t
