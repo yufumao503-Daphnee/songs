@@ -43,70 +43,55 @@
   </div>
 
 <script>
-  // === 伴奏資料庫 ===
-  const DATA = [
-    { title: '人間', artist: '王菲', tags: '經典, 抒情', lyric: '風雨過後不一定有美好的天空' },
-    { title: '特務J', artist: '蔡依林', tags: '嗨歌, 舞曲, 經典', lyric: '尖叫劃破漫長黑夜' },
-    { title: '別嘆', artist: '黃霄雲', tags: '抒情, 傷感', lyric: '如果我的眼淚會說話' },
-    { title: '刻心痕', artist: '謝宜君', tags: '抒情, 台語', lyric: '你陪我風花雪月 路一程' },
-    { title: '給我一個理由忘記', artist: 'A-Lin 黃麗玲', tags: 'KTV, 經典, 抒情, 傷感', lyric: '雨都停了 這片天灰什麼呢' },
-    { title: '多想留在你身邊', artist: '劉增瞳', tags: '網路歌曲, 抒情', lyric: '沒有花瓣的季節剩下落葉的秋天' },
-    { title: '接受', artist: '梁靜茹', tags: '經典, 抒情, 傷感', lyric: '彷彿上一分鐘 你還陪在我左右' },
-    { title: '求佛', artist: '誓言', tags: '網路歌曲, 經典, 傷感', lyric: '當月光灑在我的臉上' },
-    { title: '不敢聽的歌', artist: '李千娜', tags: '抒情, 傷感', lyric: '一個人不敢聽的歌 包廂裡總有人唱著' },
-    { title: '大眠', artist: '王心凌', tags: '抒情, 傷感', lyric: '感謝他把我 當成傻子' },
-    { title: '別再撐了', artist: '安心亞', tags: '抒情, 傷感', lyric: '你我站在回憶兩端上互對望' },
-    { title: '忽遠忽近', artist: '九姨太', tags: '網路歌曲, 抒情', lyric: '眼前的是陷阱還是一片光明' },
-    { title: '左邊', artist: '楊丞琳', tags: '經典, 抒情', lyric: '總是忍不住寂寞掉下眼淚' },
-    { title: '第一次', artist: '房東的貓', tags: '民謠, 清新', lyric: '當你走在熟悉的路上' },
-    { title: '我認', artist: '戴羽彤', tags: '網路歌曲, 傷感', lyric: '要不是你當初的狠心' },
-    { title: '可以不是你', artist: '戴羽彤', tags: '網路歌曲, 傷感', lyric: '我承認現在的我' },
-    { title: '頭號甜心', artist: '張韶涵', tags: '甜歌, 流行', lyric: '你說你最喜歡牽我的手' },
-    { title: '(Daphne漁夫帽改) 分分鐘需要你', artist: '林一', tags: '粵語, 經典, 翻唱, 甜歌', lyric: '願我會揸火箭 帶你到天空去' },
-    { title: '愛你', artist: '王心凌', tags: '經典, 甜歌, 舞曲', lyric: '如果你突然打了個噴嚏' },
-    { title: 'Honey', artist: '王心凌', tags: '經典, 甜歌, 舞曲', lyric: 'Honey Honey Honey Honey' },
-    { title: '慢冷', artist: '梁靜茹', tags: '抒情, 傷感', lyric: '說完了好像話都說完了' },
-    { title: '寵愛', artist: 'TFBOYS', tags: '甜歌, 流行', lyric: '小小的年紀還不懂什麼是愛' },
-    { title: '分分鐘需要你', artist: '林一', tags: '粵語, 經典, 甜歌', lyric: '願我會揸火箭 帶你到天空去' },
-    { title: '(漁夫帽Daphne改) 分分鐘需要你', artist: '林一', tags: '粵語, 經典, 翻唱, 甜歌', lyric: '願我會揸火箭 帶你到天空去' },
-    { title: '塵埃', artist: '家家', tags: '抒情, 傷感', lyric: '星星一直都在 這一片雲海' },
-    { title: '佐手回憶佑手你', artist: '沈末', tags: '網路歌曲, 傷感', lyric: '開燈關燈遙望無邊的星系' },
-    { title: '瀟洒小姐', artist: '蕭亞軒', tags: '經典, 舞曲, 嗨歌', lyric: '昨晚睡得太少 黑眼圈遮不掉' },
-    { title: 'So Crazy', artist: '李玟', tags: '經典, R&B, 嗨歌', lyric: '看見你站在門外' },
-    { title: 'Da Da Da', artist: '王心凌', tags: '舞曲, 嗨歌', lyric: 'Yo Yo Yo Yo 讓開心先過' },
-    { title: '如願', artist: '王菲', tags: '經典, 抒情', lyric: '你是 遙遙的路' },
-    { title: '代言人', artist: '蕭亞軒', tags: '經典, 舞曲, 嗨歌', lyric: '綠茶找誰證明好味道' },
-    { title: '刀馬旦（live）', artist: '李玟', tags: '經典, 中國風, R&B, 嗨歌', lyric: '明明早上人還在香港' },
-    { title: '勇敢', artist: '張惠妹', tags: '經典, 抒情, 勵志', lyric: '黑暗中寂靜伸出的雙手' },
-    { title: '善變', artist: '王靖雯不胖', tags: '抖音熱歌, 抒情, 傷感', lyric: '身後公園是第一次遇見' },
-    { title: '目及皆是你', artist: '小藍背心', tags: '抖音熱歌, 甜歌', lyric: '玻璃上的霧氣 我臨摹一個你' },
+  // 小工具
+  const yt = (q) => `https://www.youtube.com/results?search_query=${encodeURIComponent(q)}`;
 
-    // === 新增三首（修正連結＋第一句歌詞） ===
-    { 
-      title: '門沒鎖', 
-      artist: '呂薔', 
-      tags: '抒情, 流行', 
-      lyric: '門沒鎖 門沒鎖 門沒鎖 oh baby',
-      youtubeUrl: 'https://www.youtube.com/watch?v=_2aFVcFocXA' 
-    },
-    { 
-      title: '淪陷', 
-      artist: '王靖雯不胖', 
-      tags: '抖音熱歌, 抒情', 
-      lyric: '你走之後 整個世界 像是期待黎明的黑夜',
-      youtubeUrl: 'https://www.youtube.com/watch?v=uKgDjehn_Xk' 
-    },
-    { 
-      title: '話題', 
-      artist: '周蕙', 
-      tags: '經典, 抒情', 
-      lyric: '面對面坐著的是不是你',
-      youtubeUrl: 'https://www.youtube.com/watch?v=XtX4aawnWI4' 
-    }
+  // === 伴奏資料庫（每首皆含 youtubeUrl） ===
+  const DATA = [
+    { title: '人間', artist: '王菲', tags: '經典, 抒情', lyric: '風雨過後不一定有美好的天空', youtubeUrl: yt('王菲 人間 官方') },
+    { title: '特務J', artist: '蔡依林', tags: '嗨歌, 舞曲, 經典', lyric: '尖叫劃破漫長黑夜', youtubeUrl: yt('蔡依林 特務J 官方MV') },
+    { title: '別嘆', artist: '黃霄雲', tags: '抒情, 傷感', lyric: '如果我的眼淚會說話', youtubeUrl: yt('黃霄雲 別嘆 官方') },
+    { title: '刻心痕', artist: '謝宜君', tags: '抒情, 台語', lyric: '你陪我風花雪月 路一程', youtubeUrl: yt('謝宜君 刻心痕 官方') },
+    { title: '給我一個理由忘記', artist: 'A-Lin 黃麗玲', tags: 'KTV, 經典, 抒情, 傷感', lyric: '雨都停了 這片天灰什麼呢', youtubeUrl: yt('A-Lin 給我一個理由忘記 官方MV') },
+    { title: '多想留在你身邊', artist: '劉增瞳', tags: '網路歌曲, 抒情', lyric: '沒有花瓣的季節剩下落葉的秋天', youtubeUrl: yt('劉增瞳 多想留在你身邊 官方') },
+    { title: '接受', artist: '梁靜茹', tags: '經典, 抒情, 傷感', lyric: '彷彿上一分鐘 你還陪在我左右', youtubeUrl: yt('梁靜茹 接受 官方MV') },
+    { title: '求佛', artist: '誓言', tags: '網路歌曲, 經典, 傷感', lyric: '當月光灑在我的臉上', youtubeUrl: yt('誓言 求佛 官方') },
+    { title: '不敢聽的歌', artist: '李千娜', tags: '抒情, 傷感', lyric: '一個人不敢聽的歌 包廂裡總有人唱著', youtubeUrl: yt('李千娜 不敢聽的歌 官方') },
+    { title: '大眠', artist: '王心凌', tags: '抒情, 傷感', lyric: '感謝他把我 當成傻子', youtubeUrl: yt('王心凌 大眠 官方MV') },
+    { title: '別再撐了', artist: '安心亞', tags: '抒情, 傷感', lyric: '你我站在回憶兩端上互對望', youtubeUrl: yt('安心亞 別再撐了 官方') },
+    { title: '忽遠忽近', artist: '九姨太', tags: '網路歌曲, 抒情', lyric: '眼前的是陷阱還是一片光明', youtubeUrl: yt('九姨太 忽遠忽近 官方') },
+    { title: '左邊', artist: '楊丞琳', tags: '經典, 抒情', lyric: '總是忍不住寂寞掉下眼淚', youtubeUrl: yt('楊丞琳 左邊 官方MV') },
+    { title: '第一次', artist: '房東的貓', tags: '民謠, 清新', lyric: '當你走在熟悉的路上', youtubeUrl: yt('房東的貓 第一次 官方') },
+    { title: '我認', artist: '戴羽彤', tags: '網路歌曲, 傷感', lyric: '要不是你當初的狠心', youtubeUrl: yt('戴羽彤 我認 官方') },
+    { title: '可以不是你', artist: '戴羽彤', tags: '網路歌曲, 傷感', lyric: '我承認現在的我', youtubeUrl: yt('戴羽彤 可以不是你 官方') },
+    { title: '頭號甜心', artist: '張韶涵', tags: '甜歌, 流行', lyric: '你說你最喜歡牽我的手', youtubeUrl: yt('張韶涵 頭號甜心 官方MV') },
+    { title: '(Daphne漁夫帽改) 分分鐘需要你', artist: '林一', tags: '粵語, 經典, 翻唱, 甜歌', lyric: '願我會揸火箭 帶你到天空去', youtubeUrl: yt('林一 分分鐘需要你 翻唱 官方') },
+    { title: '愛你', artist: '王心凌', tags: '經典, 甜歌, 舞曲', lyric: '如果你突然打了個噴嚏', youtubeUrl: yt('王心凌 愛你 官方MV') },
+    { title: 'Honey', artist: '王心凌', tags: '經典, 甜歌, 舞曲', lyric: 'Honey Honey Honey Honey', youtubeUrl: yt('王心凌 Honey 官方MV') },
+    { title: '慢冷', artist: '梁靜茹', tags: '抒情, 傷感', lyric: '說完了好像話都說完了', youtubeUrl: yt('梁靜茹 慢冷 官方MV') },
+    { title: '寵愛', artist: 'TFBOYS', tags: '甜歌, 流行', lyric: '小小的年紀還不懂什麼是愛', youtubeUrl: yt('TFBOYS 寵愛 官方MV') },
+    { title: '分分鐘需要你', artist: '林一', tags: '粵語, 經典, 甜歌', lyric: '願我會揸火箭 帶你到天空去', youtubeUrl: yt('林一 分分鐘需要你 官方') },
+    { title: '(漁夫帽Daphne改) 分分鐘需要你', artist: '林一', tags: '粵語, 經典, 翻唱, 甜歌', lyric: '願我會揸火箭 帶你到天空去', youtubeUrl: yt('林一 分分鐘需要你 翻唱 官方') },
+    { title: '塵埃', artist: '家家', tags: '抒情, 傷感', lyric: '星星一直都在 這一片雲海', youtubeUrl: yt('家家 塵埃 官方') },
+    { title: '佐手回憶佑手你', artist: '沈末', tags: '網路歌曲, 傷感', lyric: '開燈關燈遙望無邊的星系', youtubeUrl: yt('沈末 佐手回憶佑手你 官方') },
+    { title: '瀟灑小姐', artist: '蕭亞軒', tags: '經典, 舞曲, 嗨歌', lyric: '昨晚睡得太少 黑眼圈遮不掉', youtubeUrl: yt('蕭亞軒 瀟灑小姐 官方MV') },
+    { title: 'So Crazy', artist: '李玟', tags: '經典, R&B, 嗨歌', lyric: '看見你站在門外', youtubeUrl: yt('李玟 So Crazy 官方MV') },
+    { title: 'Da Da Da', artist: '王心凌', tags: '舞曲, 嗨歌', lyric: 'Yo Yo Yo Yo 讓開心先過', youtubeUrl: yt('王心凌 Da Da Da 官方') },
+    { title: '如願', artist: '王菲', tags: '經典, 抒情', lyric: '你是 遙遙的路', youtubeUrl: yt('王菲 如願 官方MV') },
+    { title: '代言人', artist: '蕭亞軒', tags: '經典, 舞曲, 嗨歌', lyric: '綠茶找誰證明好味道', youtubeUrl: yt('蕭亞軒 代言人 官方MV') },
+    { title: '刀馬旦（live）', artist: '李玟', tags: '經典, 中國風, R&B, 嗨歌', lyric: '明明早上人還在香港', youtubeUrl: yt('李玟 刀馬旦 live 官方') },
+    { title: '勇敢', artist: '張惠妹', tags: '經典, 抒情, 勵志', lyric: '黑暗中寂靜伸出的雙手', youtubeUrl: yt('張惠妹 勇敢 官方MV') },
+    { title: '善變', artist: '王靖雯不胖', tags: '抖音熱歌, 抒情, 傷感', lyric: '身後公園是第一次遇見', youtubeUrl: yt('王靖雯不胖 善變 官方') },
+    { title: '目及皆是你', artist: '小藍背心', tags: '抖音熱歌, 甜歌', lyric: '玻璃上的霧氣 我臨摹一個你', youtubeUrl: yt('小藍背心 目及皆是你 官方') },
+
+    // === 新增三首（使用你確認的第一句歌詞） ===
+    { title: '門沒鎖', artist: '呂薔', tags: '抒情, 流行', lyric: '門沒鎖 門沒鎖 門沒鎖 oh baby', youtubeUrl: yt('呂薔 門沒鎖 夢想的聲音 官方') },
+    { title: '淪陷', artist: '王靖雯不胖', tags: '抖音熱歌, 抒情', lyric: '你走之後 整個世界 像是期待黎明的黑夜', youtubeUrl: yt('王靖雯不胖 淪陷 官方') },
+    { title: '話題', artist: '周蕙', tags: '經典, 抒情', lyric: '面對面坐著的是不是你', youtubeUrl: yt('周蕙 話題 官方MV') }
   ];
   // ===========================
 
-  // === 新歌推薦資料庫 (已更新為最終驗證後的 YouTube 連結) ===
+  // === 新歌推薦資料庫（保留固定連結） ===
   const NEW_SONGS_TO_LEARN = [
     { title: '尋一個你', artist: '化十', tags: '抒情, 抖音熱歌, 古風', lyric: '沉迷在 你清澈的眼睛', youtubeUrl: 'https://www.youtube.com/watch?v=psu5RBYH0iA' },
     { title: '訣愛', artist: '詹雯婷', tags: '古風, 抖音熱歌', lyric: '等天崩地裂的那一瞬間', youtubeUrl: 'https://www.youtube.com/watch?v=I4lonGT1PYM' }
@@ -116,7 +101,7 @@
   const $ = (sel) => document.querySelector(sel);
   const norm = (s) => (s||'').toLowerCase();
 
-  // --- 伴奏查詢相關的函式 ---
+  // 伴奏查詢：解析與比對
   function parseQuery(q){
     const filters = { title:[], artist:[], tag:[], any:[] };
     q.split(/\s+/).forEach(t=>{
@@ -155,7 +140,7 @@
       </a>`).join('') || '<div>沒有符合的歌曲。</div>';
   }
   
-  // --- 渲染新歌推薦列表 (加上連結) ---
+  // 新歌推薦列表
   function renderNewSongsList() {
     $('#new-songs-list').innerHTML = NEW_SONGS_TO_LEARN.map(s => `
       <a href="${s.youtubeUrl}" target="_blank" class="card-link">
@@ -170,7 +155,7 @@
     `).join('') || '<div>目前沒有新歌推薦。</div>';
   }
 
-  // --- 頁籤切換邏輯 ---
+  // 頁籤切換
   const tabs = document.querySelectorAll('.tab');
   const searchSection = $('#search-section');
   const newSongsSection = $('#new-songs-section');
@@ -191,7 +176,7 @@
     });
   });
 
-  // --- 初始化 ---
+  // 初始化
   $('#q').addEventListener('input', renderSearchList);
   renderSearchList();
   renderNewSongsList();
