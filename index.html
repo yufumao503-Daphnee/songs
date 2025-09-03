@@ -91,4 +91,89 @@
     { title: '訣愛', artist: '詹雯婷', tags: '古風, 抖音熱歌', lyric: '等天崩地裂的那一瞬間', youtubeUrl: 'https://www.youtube.com/watch?v=I4lonGT1PYM' },
     { title: '寄長月', artist: '不才', tags: '古風, 抒情', lyric: '', youtubeUrl: 'https://www.youtube.com/watch?v=UOiCOlEm5ZY' },
     { title: '花雨落', artist: '任然', tags: '抒情, 古風', lyric: '', youtubeUrl: 'https://www.youtube.com/watch?v=8nUObE_IHas' },
-    { title: '九萬字', artis
+    { title: '九萬字', artist: '黃詩扶', tags: '古風, 抒情', lyric: '', youtubeUrl: 'https://www.youtube.com/watch?v=Q_8K0KfQjm4' },
+    { title: '卡農 in Love', artist: '蔡佩軒', tags: '流行, 古典', lyric: '', youtubeUrl: 'https://www.youtube.com/watch?v=YaJ_lYFgr6c' },
+    { title: '今生今世', artist: '炎明熹', tags: '翻唱, 經典', lyric: '', youtubeUrl: 'https://www.youtube.com/watch?v=Yfdu31XPvkA' },
+    { title: '有你在', artist: '趙露思', tags: '甜歌, 動態歌詞', lyric: '', youtubeUrl: 'https://www.youtube.com/watch?v=ASKeCHc_eJc' }
+  ];
+
+  // 小工具
+  const $ = (sel) => document.querySelector(sel);
+  const norm = (s) => (s||'').toLowerCase();
+
+  function parseQuery(q){
+    const filters = { title:[], artist:[], tag:[], any:[] };
+    q.split(/\s+/).forEach(t=>{
+      const m = t.match(/^(title|artist|tag):(.+)$/i);
+      if(m) filters[m[1].toLowerCase()].push(m[2]);
+      else if(t) filters.any.push(t);
+    });
+    return filters;
+  }
+
+  function matches(song, f){
+    const hay = {
+      title: norm(song.title), 
+      artist: norm(song.artist),
+      tag: norm(song.tags),
+      lyric: norm(song.lyric),
+      any: norm(song.title + ' ' + song.artist + ' ' + song.tags + ' ' + song.lyric)
+    };
+    const ok = (arr, key) => arr.length === 0 || arr.every(t => hay[key].includes(norm(t)));
+    return ok(f.title, 'title') && ok(f.artist, 'artist') && ok(f.tag, 'tag') && ok(f.any, 'any');
+  }
+
+  function renderSearchList(){
+    const q = $('#q').value.trim();
+    const f = parseQuery(q);
+    const rows = DATA.filter(s => matches(s, f));
+    $('#list').innerHTML = rows.map(s => `
+      ${s.youtubeUrl ? `<a href="${s.youtubeUrl}" target="_blank" class="card-link">` : '<div class="card-link">'}
+        <div class="card">
+          <div><span class="title">${s.title}</span><span class="artist">- ${s.artist}</span></div>
+          <div class="lyric">“${s.lyric || ''}”</div>
+          <div class="tags">${(s.tags || '').split(',').map(t => t.trim() ? `<span class="tag">${t.trim()}</span>` : '').join(' ')}</div>
+        </div>
+      ${s.youtubeUrl ? '</a>' : '</div>'}
+    `).join('') || '<div>沒有符合的歌曲。</div>';
+  }
+
+  function renderNewSongsList() {
+    $('#new-songs-list').innerHTML = NEW_SONGS_TO_LEARN.map(s => `
+      <a href="${s.youtubeUrl}" target="_blank" class="card-link">
+        <div class="card">
+          <div><span class="title">${s.title}</span><span class="artist">- ${s.artist}</span></div>
+          <div class="lyric">“${s.lyric || ''}”</div>
+          <div class="tags">${(s.tags || '').split(',').map(t => t.trim() ? `<span class="tag">${t.trim()}</span>` : '').join(' ')}</div>
+        </div>
+      </a>
+    `).join('') || '<div>目前沒有新歌推薦。</div>';
+  }
+
+  // 頁籤切換
+  const tabs = document.querySelectorAll('.tab');
+  const searchSection = $('#search-section');
+  const newSongsSection = $('#new-songs-section');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const tabName = tab.getAttribute('data-tab');
+      if (tabName === 'search') {
+        searchSection.style.display = 'block';
+        newSongsSection.style.display = 'none';
+      } else {
+        searchSection.style.display = 'none';
+        newSongsSection.style.display = 'block';
+      }
+    });
+  });
+
+  // 初始化
+  $('#q').addEventListener('input', renderSearchList);
+  renderSearchList();
+  renderNewSongsList();
+</script>
+</body>
+</html>
