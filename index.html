@@ -12,8 +12,8 @@
     input { padding: 12px; font-size: 16px; width: 100%; max-width: 400px; border-radius: 8px; border: none; background: #1e293b; color: #f1f5f9; }
     .list { margin-top: 20px; display: grid; gap: 10px; }
     .card { background: #1e293b; padding: 12px; border-radius: 8px; transition: background 0.2s; }
-    #new-songs-list .card-link:hover .card,
-    #list .card-link:hover .card { background: #334155; }
+    /* --- 統一樣式，讓所有列表的 hover 效果一致 --- */
+    .card-link:hover .card { background: #334155; }
     .card-link { color: inherit; text-decoration: none; }
     .title { font-weight: bold; }
     .artist { color: #93c5fd; margin-left: 0.5em; }
@@ -28,6 +28,8 @@
   <div class="tabs">
     <button class="tab active" data-tab="search">伴奏查詢</button>
     <button class="tab" data-tab="new">新歌推薦</button>
+    <!-- === 新增的 BGM 頁籤 === -->
+    <button class="tab" data-tab="bgm">霓霓BGM</button>
   </div>
 
   <div id="search-section">
@@ -37,6 +39,11 @@
 
   <div id="new-songs-section" style="display: none;">
     <div id="new-songs-list" class="list"></div>
+  </div>
+
+  <!-- === 新增的 BGM 內容區塊 === -->
+  <div id="bgm-section" style="display: none;">
+    <div id="bgm-list" class="list"></div>
   </div>
 
 <script>
@@ -77,15 +84,13 @@
     { title: '勇敢', artist: '張惠妹', tags: '經典, 抒情, 勵志', lyric: '黑暗中寂靜伸出的雙手' },
     { title: '善變', artist: '王靖雯不胖', tags: '抖音熱歌, 抒情, 傷感', lyric: '身後公園是第一次遇見' },
     { title: '目及皆是你', artist: '小藍背心', tags: '抖音熱歌, 甜歌', lyric: '玻璃上的霧氣 我臨摹一個你' },
-
-    // 你的新增
     { title: '門沒鎖', artist: '呂薔', tags: '抒情, 流行', lyric: '門沒鎖 門沒鎖 門沒鎖 oh baby', youtubeUrl: 'https://www.youtube.com/watch?v=_2aFVcFocXA' },
     { title: '淪陷', artist: '王靖雯不胖', tags: '抖音熱歌, 抒情', lyric: '你走之後 整個世界 像是期待黎明的黑夜', youtubeUrl: 'https://www.youtube.com/watch?v=uKgDjehn_Xk' },
     { title: '話題', artist: '周蕙', tags: '經典, 抒情', lyric: '面對面坐著的是不是你', youtubeUrl: 'https://www.youtube.com/watch?v=XtX4aawnWI4' },
     { title: '車站', artist: '張秀卿', tags: '台語, 經典, 抒情', lyric: '火車已經到車站 阮的心頭漸漸重', youtubeUrl: 'https://www.youtube.com/watch?v=B-nfZnomUWA' }
   ];
 
-  // === 新歌推薦（原本2首 + 你指定的6首） ===
+  // === 新歌推薦 ===
   const NEW_SONGS_TO_LEARN = [
     { title: '尋一個你', artist: '化十', tags: '抒情, 抖音熱歌, 古風', lyric: '沉迷在 你清澈的眼睛', youtubeUrl: 'https://www.youtube.com/watch?v=psu5RBYH0iA' },
     { title: '訣愛', artist: '詹雯婷', tags: '古風, 抖音熱歌', lyric: '等天崩地裂的那一瞬間', youtubeUrl: 'https://www.youtube.com/watch?v=I4lonGT1PYM' },
@@ -96,6 +101,11 @@
     { title: '今生今世', artist: '炎明熹', tags: '翻唱, 經典', lyric: '', youtubeUrl: 'https://www.youtube.com/watch?v=Yfdu31XPvkA' },
     { title: '有你在', artist: '趙露思', tags: '甜歌, 動態歌詞', lyric: '', youtubeUrl: 'https://www.youtube.com/watch?v=ASKeCHc_eJc' }
   ];
+  
+  // === 已錄製的 BGM 列表 ===
+  const RECORDED_BGM_TITLES = ['人間', '忽遠忽近', '愛你'];
+  const BGM_DATA = DATA.filter(song => RECORDED_BGM_TITLES.includes(song.title));
+
 
   // 小工具
   const $ = (sel) => document.querySelector(sel);
@@ -122,50 +132,64 @@
     const ok = (arr, key) => arr.length === 0 || arr.every(t => hay[key].includes(norm(t)));
     return ok(f.title, 'title') && ok(f.artist, 'artist') && ok(f.tag, 'tag') && ok(f.any, 'any');
   }
+  
+  // --- 共用的卡片產生器 ---
+  function createSongCard(s) {
+    const linkStart = s.youtubeUrl ? `<a href="${s.youtubeUrl}" target="_blank" class="card-link">` : '<div class="card-link">';
+    const linkEnd = s.youtubeUrl ? '</a>' : '</div>';
+    const tagsHtml = (s.tags || '').split(',').map(t => t.trim() ? `<span class="tag">${t.trim()}</span>` : '').join(' ');
+
+    return `
+      ${linkStart}
+        <div class="card">
+          <div><span class="title">${s.title}</span><span class="artist">- ${s.artist}</span></div>
+          <div class="lyric">“${s.lyric || ''}”</div>
+          <div class="tags">${tagsHtml}</div>
+        </div>
+      ${linkEnd}
+    `;
+  }
 
   function renderSearchList(){
     const q = $('#q').value.trim();
     const f = parseQuery(q);
     const rows = DATA.filter(s => matches(s, f));
-    $('#list').innerHTML = rows.map(s => `
-      ${s.youtubeUrl ? `<a href="${s.youtubeUrl}" target="_blank" class="card-link">` : '<div class="card-link">'}
-        <div class="card">
-          <div><span class="title">${s.title}</span><span class="artist">- ${s.artist}</span></div>
-          <div class="lyric">“${s.lyric || ''}”</div>
-          <div class="tags">${(s.tags || '').split(',').map(t => t.trim() ? `<span class="tag">${t.trim()}</span>` : '').join(' ')}</div>
-        </div>
-      ${s.youtubeUrl ? '</a>' : '</div>'}
-    `).join('') || '<div>沒有符合的歌曲。</div>';
+    $('#list').innerHTML = rows.map(createSongCard).join('') || '<div>沒有符合的歌曲。</div>';
   }
 
   function renderNewSongsList() {
-    $('#new-songs-list').innerHTML = NEW_SONGS_TO_LEARN.map(s => `
-      <a href="${s.youtubeUrl}" target="_blank" class="card-link">
-        <div class="card">
-          <div><span class="title">${s.title}</span><span class="artist">- ${s.artist}</span></div>
-          <div class="lyric">“${s.lyric || ''}”</div>
-          <div class="tags">${(s.tags || '').split(',').map(t => t.trim() ? `<span class="tag">${t.trim()}</span>` : '').join(' ')}</div>
-        </div>
-      </a>
-    `).join('') || '<div>目前沒有新歌推薦。</div>';
+    $('#new-songs-list').innerHTML = NEW_SONGS_TO_LEARN.map(createSongCard).join('') || '<div>目前沒有新歌推薦。</div>';
+  }
+  
+  // --- 新增的 BGM 列表渲染函式 ---
+  function renderBgmList() {
+    $('#bgm-list').innerHTML = BGM_DATA.map(createSongCard).join('') || '<div>目前沒有已錄製的 BGM。</div>';
   }
 
   // 頁籤切換
   const tabs = document.querySelectorAll('.tab');
   const searchSection = $('#search-section');
   const newSongsSection = $('#new-songs-section');
+  const bgmSection = $('#bgm-section'); // 取得新的 BGM 區塊
 
   tabs.forEach(tab => {
     tab.addEventListener('click', () => {
       tabs.forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
       const tabName = tab.getAttribute('data-tab');
+      
+      // 先隱藏所有區塊
+      searchSection.style.display = 'none';
+      newSongsSection.style.display = 'none';
+      bgmSection.style.display = 'none';
+
+      // 根據點擊的頁籤顯示對應的區塊
       if (tabName === 'search') {
         searchSection.style.display = 'block';
-        newSongsSection.style.display = 'none';
-      } else {
-        searchSection.style.display = 'none';
+      } else if (tabName === 'new') {
         newSongsSection.style.display = 'block';
+      } else if (tabName === 'bgm') {
+        bgmSection.style.display = 'block';
       }
     });
   });
@@ -174,6 +198,7 @@
   $('#q').addEventListener('input', renderSearchList);
   renderSearchList();
   renderNewSongsList();
+  renderBgmList(); // 初始化時也要渲染 BGM 列表
 </script>
 </body>
 </html>
